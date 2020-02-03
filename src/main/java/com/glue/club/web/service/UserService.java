@@ -1,4 +1,5 @@
 package com.glue.club.web.service;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,8 @@ public class UserService {
         }
     }
 
-    public User findUserByToken(String tokenValue) {
-        return null;
+    public User findUserByToken(String token) {
+        return userMapper.findByToken(token);
     }
+
 }

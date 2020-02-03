@@ -1,5 +1,7 @@
 package com.glue.club.web.service;
 
+import com.glue.club.web.dto.NotificationDTO;
+import com.glue.club.web.model.User;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import com.glue.club.web.dao.NotificationMapper;
@@ -41,6 +43,10 @@ public class NotificationService{
     }
 
     public Long unreadCount(Long userId) {
+        return null;
+    }
+
+    public NotificationDTO read(Long id, User user) {
         return null;
     }
 }

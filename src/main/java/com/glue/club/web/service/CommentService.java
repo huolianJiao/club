@@ -1,9 +1,14 @@
 package com.glue.club.web.service;
 
+import com.glue.club.common.enums.CommentTypeEnum;
+import com.glue.club.web.dto.CommentDTO;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import com.glue.club.web.dao.CommentMapper;
 import com.glue.club.web.model.Comment;
+
+import java.util.List;
+
 @Service
 public class CommentService{
 
@@ -40,4 +45,7 @@ public class CommentService{
         return commentMapper.updateByPrimaryKey(record);
     }
 
+    public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum comment) {
+        return null;
+    }
 }

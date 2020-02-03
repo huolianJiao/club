@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="com.glue.club.web.model.User">
     <!--@mbg.generated-->
     <!--@Table user-->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="account_id" jdbcType="VARCHAR" property="accountId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="token" jdbcType="CHAR" property="token" />
-    <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="BIGINT" property="gmtModified" />
-    <result column="bio" jdbcType="VARCHAR" property="bio" />
-    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="account_id" jdbcType="VARCHAR" property="accountId"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="token" jdbcType="CHAR" property="token"/>
+    <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate"/>
+    <result column="gmt_modified" jdbcType="BIGINT" property="gmtModified"/>
+    <result column="bio" jdbcType="VARCHAR" property="bio"/>
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -19,8 +19,8 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
+    select
+    <include refid="Base_Column_List"/>
     from user
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -29,16 +29,18 @@
     delete from user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.glue.club.web.model.User" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.glue.club.web.model.User"
+          useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into user (account_id, `name`, token, 
-      gmt_create, gmt_modified, bio, 
-      avatar_url)
-    values (#{accountId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{token,jdbcType=CHAR}, 
-      #{gmtCreate,jdbcType=BIGINT}, #{gmtModified,jdbcType=BIGINT}, #{bio,jdbcType=VARCHAR}, 
-      #{avatarUrl,jdbcType=VARCHAR})
+    insert into user (account_id, `name`, token,
+    gmt_create, gmt_modified, bio,
+    avatar_url)
+    values (#{accountId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{token,jdbcType=CHAR},
+    #{gmtCreate,jdbcType=BIGINT}, #{gmtModified,jdbcType=BIGINT}, #{bio,jdbcType=VARCHAR},
+    #{avatarUrl,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.glue.club.web.model.User" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.glue.club.web.model.User"
+          useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -120,12 +122,12 @@
     <!--@mbg.generated-->
     update user
     set account_id = #{accountId,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
-      token = #{token,jdbcType=CHAR},
-      gmt_create = #{gmtCreate,jdbcType=BIGINT},
-      gmt_modified = #{gmtModified,jdbcType=BIGINT},
-      bio = #{bio,jdbcType=VARCHAR},
-      avatar_url = #{avatarUrl,jdbcType=VARCHAR}
+    `name` = #{name,jdbcType=VARCHAR},
+    token = #{token,jdbcType=CHAR},
+    gmt_create = #{gmtCreate,jdbcType=BIGINT},
+    gmt_modified = #{gmtModified,jdbcType=BIGINT},
+    bio = #{bio,jdbcType=VARCHAR},
+    avatar_url = #{avatarUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -134,5 +136,12 @@
     <include refid="Base_Column_List"/>
     from user
     where account_id=#{accountId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findByToken" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where token=#{token,jdbcType=CHAR}
   </select>
 </mapper>

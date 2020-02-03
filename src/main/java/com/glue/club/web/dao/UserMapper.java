@@ -28,4 +28,6 @@ public interface UserMapper {
      */
     User findByAccountId(@Param("accountId")String accountId);
 
+    User findByToken(@Param("token")String token);
+
 }

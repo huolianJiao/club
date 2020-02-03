@@ -35,7 +35,7 @@
                     <a th:href="@{/(sort='no')}" class="red">消灭零回复</a>
                 </li>
             </ul>
-            <div class="media" style="margin-bottom: 10px" th:each="question : ${pagination.data}">
+            <div class="media" style="margin-bottom: 10px" th:each="question : ${pagination.list}">
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
@@ -56,32 +56,32 @@
             </div>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li th:if="${pagination.showFirstPage}">
+                    <li>
                         <a th:href="@{/(page=1,search=${search},tag=${tag},sort=${sort})}" aria-label="Previous">
-                            <span aria-hidden="true">&lt;&lt;</span>
+                            <span aria-hidden="true">首页</span>
                         </a>
                     </li>
-                    <li th:if="${pagination.showPrevious}">
-                        <a th:href="@{/(page=${pagination.page - 1},search=${search},tag=${tag},sort=${sort})}"
+                    <li th:if="${pagination.hasPreviousPage}">
+                        <a th:href="@{/(page=${pagination.pageNum - 1},search=${search},tag=${tag},sort=${sort})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
-                    <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page}? 'active' : ''">
+                    <li th:each="page : ${pagination.navigatepageNums}" th:class="${pagination.pageNum == page}? 'active' : ''">
                         <a th:href="@{/(page=${page},search=${search},tag=${tag},sort=${sort})}" th:text="${page}"></a>
                     </li>
 
-                    <li th:if="${pagination.showNext}">
-                        <a th:href="@{/(page=${pagination.page +1 },search=${search},tag=${tag},sort=${sort})}"
+                    <li th:if="${pagination.hasNextPage}">
+                        <a th:href="@{/(page=${pagination.pageNum +1 },search=${search},tag=${tag},sort=${sort})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
-                    <li th:if="${pagination.showEndPage}">
-                        <a th:href="@{/(page=${pagination.totalPage},search=${search},tag=${tag},sort=${sort})}"
+                    <li>
+                        <a th:href="@{/(page=${pagination.pages},search=${search},tag=${tag},sort=${sort})}"
                            aria-label="Previous">
-                            <span aria-hidden="true">&gt;&gt;</span>
+                            <span aria-hidden="true">末页</span>
                         </a>
                     </li>
                 </ul>
