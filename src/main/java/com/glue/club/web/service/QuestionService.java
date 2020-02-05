@@ -1,7 +1,8 @@
 package com.glue.club.web.service;
 
-import com.github.pagehelper.PageHelper;
 import com.glue.club.common.enums.SortEnum;
+import com.glue.club.common.exception.CustomizeErrorCode;
+import com.glue.club.common.exception.CustomizeException;
 import com.glue.club.web.dao.QuestionExtMapper;
 import com.glue.club.web.dao.UserMapper;
 import com.glue.club.web.dto.QuestionDTO;
@@ -10,7 +11,9 @@ import com.glue.club.web.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+
 import com.glue.club.web.model.Question;
 import com.glue.club.web.dao.QuestionMapper;
 
@@ -23,7 +26,7 @@ import java.util.stream.Collectors;
  * @author jiao
  */
 @Service
-public class QuestionService{
+public class QuestionService {
 
     @Resource
     private QuestionMapper questionMapper;
@@ -34,42 +37,60 @@ public class QuestionService{
     @Resource
     private QuestionExtMapper questionExtMapper;
 
-    
+
     public int deleteByPrimaryKey(Long id) {
         return questionMapper.deleteByPrimaryKey(id);
     }
 
-    
+
     public int insert(Question record) {
         return questionMapper.insert(record);
     }
 
-    
+
     public int insertSelective(Question record) {
         return questionMapper.insertSelective(record);
     }
 
-    
+
     public Question selectByPrimaryKey(Long id) {
         return questionMapper.selectByPrimaryKey(id);
     }
 
-    
+
     public int updateByPrimaryKeySelective(Question record) {
         return questionMapper.updateByPrimaryKeySelective(record);
     }
 
-    
+
     public int updateByPrimaryKey(Question record) {
         return questionMapper.updateByPrimaryKey(record);
     }
 
     public QuestionDTO getById(Long id) {
-        return null;
+        QuestionDTO questionDTO = new QuestionDTO();
+        Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 
     public void createOrUpdate(Question question) {
-
+        if (question.getId() == null) {
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            insertSelective(question);
+        } else {
+            question.setGmtModified(System.currentTimeMillis());
+            int update = questionMapper.updateByPrimaryKeySelective(question);
+            if (update != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
+        }
     }
 
     public List<QuestionDTO> getPageList(String search, String tag, String sort) {
@@ -119,10 +140,26 @@ public class QuestionService{
     }
 
     public void incView(Long id) {
-
+        Question updateRecord = new Question();
+        updateRecord.setViewCount(1);
+        updateRecord.setId(id);
+        int update = questionExtMapper.incView(updateRecord);
+        if (update != 1) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
     }
 
     public List<QuestionDTO> selectRelated(QuestionDTO question) {
-        return null;
+        String regexpTag = Arrays.asList(question.getTag().split(",")).stream().collect(Collectors.joining("|"));
+        Question selectQuestion = new Question();
+        selectQuestion.setId(question.getId());
+        selectQuestion.setTag(regexpTag);
+        List<Question> questions = questionExtMapper.selectRelated(selectQuestion);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 }
